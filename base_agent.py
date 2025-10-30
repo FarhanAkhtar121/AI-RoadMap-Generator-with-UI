@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import Dict, Any
-from langchain_community.chat_models import ChatOpenAI  # Updated import
+from langchain_openai import ChatOpenAI  # Updated import
 from langchain.tools import Tool
 import json
 import re
