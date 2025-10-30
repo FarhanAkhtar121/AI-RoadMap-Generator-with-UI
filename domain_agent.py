@@ -1,6 +1,6 @@
 from typing import Dict, Any
 from base_agent import BaseAgent
-from langchain.tools import Tool
+from langchain_core.tools import Tool
 
 class DomainAgent(BaseAgent):
     def _initialize_tools(self):
