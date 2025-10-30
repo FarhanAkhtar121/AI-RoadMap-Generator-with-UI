@@ -5,6 +5,7 @@ import { Sparkles, Lightbulb, Target } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { RoadmapVisualization } from './RoadmapVisualization';
 
+const API_BASE = import.meta.env.VITE_API_BASE || ''; // '' means use relative URLs
 
 export const RoadmapGenerator = () => {
   const [conversation, setConversation] = useState<{from: 'user'|'bot', text: string}[]>([]);
@@ -23,7 +24,7 @@ export const RoadmapGenerator = () => {
     setConversation(prev => [...prev, { from: 'user', text: userInput }]);
 
     try {
-      const response = await fetch('http://localhost:8000/api/conversation', {
+      const response = await fetch(`${API_BASE}/api/conversation`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_input: userInput }),
@@ -43,8 +44,12 @@ export const RoadmapGenerator = () => {
         setConversation([]);
       } else if (typeof data === 'object' && data.html_path) {
         // Fix slashes and make absolute URL
-        const htmlUrl = `http://localhost:8000/${data.html_path.replace(/\\\\/g, "/")}`;
-        navigate('/roadmap', { state: { htmlUrl } });
+        // const htmlUrl = `http://localhost:8000/${data.html_path.replace(/\\\\/g, "/")}`;
+        // navigate('/roadmap', { state: { htmlUrl } });
+        // Build path relative (Vite proxy) or absolute (when API_BASE is set)
+        const rel = String(data.html_path).replace(/^\/+/, '').replace(/\\\\/g, '/');
+        const htmlUrl = `${API_BASE ? `${API_BASE}/` : '/'}${rel}`;
+        setGeneratedHtmlPath(htmlUrl); // show in iframe below
       }
     } catch (error) {
       alert('Failed to communicate with backend');
