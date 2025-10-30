@@ -1,7 +1,7 @@
 from typing import Dict, Any
 import json
 from pathlib import Path
-from langchain.tools import Tool
+from langchain_core.tools import Tool
 
 class VisualizationRenderer:
     def render_html(self, mermaid_content: str, mindmap_content: str) -> str:
