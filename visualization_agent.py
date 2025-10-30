@@ -3,7 +3,7 @@ from base_agent import BaseAgent
 
 import json
 from pathlib import Path
-from langchain.tools import Tool
+from langchain_core.tools import Tool
 from datetime import datetime
 
 
